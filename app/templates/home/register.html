@@ -18,9 +18,10 @@
         <div class="form-group">
             <label>验证码</label>
             <input type="text" class="form-control" placeholder="请输入验证码">
-            <img data-src="holder.js/180*50" style="margin-top: 6px;">
+            <img data-src="holder.js/180x50" style="margin-top: 6px;">
         </div>
         <a href="/login/">前往登陆</a>
+        <br>
         <a class="btn btn-primary" href="/art/list/"
         >注册</a>
     </form>
@@ -29,5 +30,5 @@
 
 {% block js %}
     <script src={{ url_for('static', filename='holder/holder.js') }}></script>
-{#    <script src="https://cdnjs.cloudflare.com/ajax/libs/holder/2.9.4/holder.js"></script>#}
+{#    <script src="https://cdn.bootcss.com/holder/2.9.4/holder.min.js"></script>#}
 {% endblock %}

@@ -1,6 +1,50 @@
 {% extends 'art/art.html' %}
+
+{% block css %}
+    <script src="{{ url_for("static", filename='ue/ueditor.config.js') }}" type="text/javascript" charset="UTF-8"></script>
+    <script src="{{ url_for("static", filename='ue/ueditor.all.js') }}" type="text/javascript" charset="UTF-8"></script>
+    <script src="{{ url_for("static", filename='ue/lang/zh-cn/zh-cn.js') }}" type="text/javascript" charset="UTF-8"></script>
+
+{% endblock %}
 {% block content %}
 
+    <form>
+        <div class="form-group">
+            <label>标题</label>
+            <input type="text" class="form-control" placeholder="请输入标题">
+        </div>
+        <div class="form-group">
+            <label>分类</label>
+            <select type="" class="form-control">
+                <option value="1">分类1</option>
+                <option value="2">分类2</option>
+                <option value="3">分类3</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>封面</label>
+            <input type="file" class="form-control-file">
+            <img data-src="holder.js/300x160" style="margin-top: 6px">
+            <br>
+            <a class="btn btn-primary" style="margin-top: 6px">上传封面</a>
+        </div>
+        <div class="form-group">
+            <label>内容</label>
+            <textarea id="content" style="height: 300px"></textarea>
+        </div>
+    <button type="button" class="btn btn-primary">发布</button>
+    </form>
 
+{% endblock %}
+
+{% block js %}
+    <script>
+        $(document).ready(function () {
+            $("#m1").addClass("active")
+        });
+
+        var ue = UE.getEditor("content")
+
+    </script>
 
 {% endblock %}
