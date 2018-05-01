@@ -75,18 +75,18 @@ class RegisterForm(FlaskForm):
             "placeholder": "请再次输入密码",
         }
     )
-    code = StringField(
-        label="验证码",
-        validators=[
-            DataRequired("验证码不能为空"),
-
-        ],
-        description="验证码",
-        render_kw={
-            "class": "form-control",
-            "placeholder": "请输入验证码",
-        }
-    )
+    # code = StringField(
+    #     label="验证码",
+    #     validators=[
+    #         DataRequired("验证码不能为空"),
+    #
+    #     ],
+    #     description="验证码",
+    #     render_kw={
+    #         "class": "form-control",
+    #         "placeholder": "请输入验证码",
+    #     }
+    # )
     submit = SubmitField(
         "注册",
         render_kw={

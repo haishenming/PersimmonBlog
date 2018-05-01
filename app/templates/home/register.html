@@ -29,14 +29,14 @@
                 <p style="color: red">{{ v }}</p>
             {% endfor %}
         </div>
-        <div class="form-group">
-            <label>{{ form.code.label }}</label>
-            {{ form.code }}
-            {% for v in form.code.errors %}
-                <p style="color: red">{{ v }}</p>
-            {% endfor %}
-            <img data-src="holder.js/180x50" style="margin-top: 6px;">
-        </div>
+{#        <div class="form-group">#}
+{#            <label>{{ form.code.label }}</label>#}
+{#            {{ form.code }}#}
+{#            {% for v in form.code.errors %}#}
+{#                <p style="color: red">{{ v }}</p>#}
+{#            {% endfor %}#}
+{#            <img data-src="holder.js/180x50" style="margin-top: 6px;">#}
+{#        </div>#}
         <a href="/login/">前往登陆</a>
         <br>
         {{ form.submit }}
