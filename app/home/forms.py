@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, EqualTo, ValidationError
+from ..models import User
 
 
 # 登陆表单
@@ -92,3 +93,11 @@ class RegisterForm(FlaskForm):
             "class": "btn btn-primary",
         }
     )
+
+    # 验证用户名
+    def validate_name(self, field):
+        name = field.data
+        user = User.query.filter_by(name=name).count()
+        if user > 0:
+            raise ValidationError("用户名已经存在")
+
