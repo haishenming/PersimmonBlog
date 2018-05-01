@@ -60,7 +60,7 @@ class RegisterForm(FlaskForm):
         }
     )
     code = StringField(
-        name="验证码",
+        label="验证码",
         validators=[],
         description="验证码",
         render_kw={
@@ -68,10 +68,10 @@ class RegisterForm(FlaskForm):
             "placeholder": "请输入验证码",
         }
     )
-
     submit = SubmitField(
         "注册",
         render_kw={
-            "class": "btn btn-success",
+            "class": "btn btn-primary",
         }
     )
+
