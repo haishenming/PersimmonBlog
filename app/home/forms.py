@@ -1,12 +1,15 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
+from wtforms.validators import DataRequired, EqualTo, ValidationError
 
 
 # 登陆表单
 class LoginForm(FlaskForm):
     name = StringField(
         label="帐号",
-        validators=[],
+        validators=[
+            DataRequired("帐号不能为空"),
+        ],
         description="帐号",
         render_kw={
             "class": "form-control",
@@ -15,7 +18,10 @@ class LoginForm(FlaskForm):
     )
     pwd = PasswordField(
         label="密码",
-        validators=[],
+        validators=[
+            DataRequired("密码不能为空"),
+
+        ],
         description="密码",
         render_kw={
             "class": "form-control",
@@ -34,7 +40,10 @@ class LoginForm(FlaskForm):
 class RegisterForm(FlaskForm):
     name = StringField(
         label="帐号",
-        validators=[],
+        validators=[
+            DataRequired("帐号不能为空"),
+
+        ],
         description="帐号",
         render_kw={
             "class": "form-control",
@@ -43,7 +52,10 @@ class RegisterForm(FlaskForm):
     )
     pwd = PasswordField(
         label="密码",
-        validators=[],
+        validators=[
+            DataRequired("密码不能为空"),
+
+        ],
         description="密码",
         render_kw={
             "class": "form-control",
@@ -52,7 +64,10 @@ class RegisterForm(FlaskForm):
     )
     repwd = PasswordField(
         label="确认密码",
-        validators=[],
+        validators=[
+            DataRequired("确认密码不能为空"),
+            EqualTo('pwd', "两次输入密码不一致")
+        ],
         description="确认密码",
         render_kw={
             "class": "form-control",
@@ -61,7 +76,10 @@ class RegisterForm(FlaskForm):
     )
     code = StringField(
         label="验证码",
-        validators=[],
+        validators=[
+            DataRequired("验证码不能为空"),
+
+        ],
         description="验证码",
         render_kw={
             "class": "form-control",
@@ -74,4 +92,3 @@ class RegisterForm(FlaskForm):
             "class": "btn btn-primary",
         }
     )
-

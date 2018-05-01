@@ -6,7 +6,7 @@ import pymysql
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://root:Haishen123@127.0.0.1:3306/persimmon_blog"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
 
@@ -24,7 +24,7 @@ class User(db.Model):
     addtime = db.Column(db.DateTime, index=True, default=datetime.now)  # 注册时间
     uuid = db.Column(db.String(255), unique=True)  # 唯一识别码
     userlogs = db.relationship("Userlog", backref="user")  # 登陆日志
-    tags = db.relationship("Tag", backref="user")  # 用户标签
+    cates = db.relationship("Cate", backref="cate_user")  # 用户标签
     articles = db.relationship("Article", backref="user")  # 用户文章
     comments = db.relationship("Comment", backref="user")  # 评论
     articlecols = db.relationship("Articlecol", backref="user")  # 收藏文章
@@ -52,7 +52,7 @@ class Cate(db.Model):
     name = db.Column(db.String(100), unique=True)  # 标题
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))  # 所属用户
     addtime = db.Column(db.DateTime, index=True, default=datetime.now)  # 创建时间
-    articles = db.relationship("Article", backref="cate")
+    articles = db.relationship("Article", backref="articles_cate")
 
     def __repr__(self):
         return "<Tag {name}>".format(name=self.name)

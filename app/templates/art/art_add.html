@@ -10,29 +10,25 @@
 
     <form>
         <div class="form-group">
-            <label>标题</label>
-            <input type="text" class="form-control" placeholder="请输入标题">
+            <label>{{ form.title.label }}</label>
+            {{ form.title }}
         </div>
         <div class="form-group">
-            <label>分类</label>
-            <select type="" class="form-control">
-                <option value="1">分类1</option>
-                <option value="2">分类2</option>
-                <option value="3">分类3</option>
-            </select>
+            <label>{{ form.cate.label }}</label>
+            {{ form.cate }}
         </div>
         <div class="form-group">
-            <label>封面</label>
-            <input type="file" class="form-control-file">
+            <label>{{ form.logo.label }}</label>
+            {{ form.logo }}
             <img data-src="holder.js/300x160" style="margin-top: 6px">
             <br>
             <a class="btn btn-primary" style="margin-top: 6px">上传封面</a>
         </div>
         <div class="form-group">
-            <label>内容</label>
-            <textarea id="content" style="height: 300px"></textarea>
+            <label>{{ form.content.label }}</label>
+            {{ form.content }}
         </div>
-    <button type="button" class="btn btn-primary">发布</button>
+    {{ form.submit }}
     </form>
 
 {% endblock %}

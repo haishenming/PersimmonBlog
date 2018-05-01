@@ -1,11 +1,21 @@
 from flask import render_template, redirect
+
+from .forms import ArtForm
 from . import art
 
 
 # 发布文章
 @art.route("/add/", methods=["GET", "POST"])
 def add():
-    return render_template("art/art_add.html", title="添加文章")
+
+    form = ArtForm()
+
+    form.cate.choices = [
+        (1, "分类1"),
+        (2, "分类2"),
+        (3, "分类3"),
+    ]
+    return render_template("art/art_add.html", title="添加文章", form=form)
 
 
 # 编辑文章
