@@ -1,7 +1,10 @@
 from flask import render_template, redirect, url_for
 
+from .forms import LoginForm, RegisterForm
 from . import home
 
+from .. import app
+app.config["SECRET_KEY"] = "hjdahnjehhjkkjajehjakihufeiasdkj"
 
 @home.route("/")
 def index():
@@ -11,13 +14,17 @@ def index():
 # 登陆
 @home.route("/login/", methods=["GET", "POST"])
 def login():
-    return render_template("home/login.html", title="登陆")
+    form = LoginForm()
+
+    return render_template("home/login.html", title="登陆", form=form)
 
 
 # 注册
 @home.route("/register/", methods=["GET", "POST"])
 def register():
-    return render_template("home/register.html", title="注册")
+    form = RegisterForm()
+
+    return render_template("home/register.html", title="注册", form=form)
 
 
 # 退出

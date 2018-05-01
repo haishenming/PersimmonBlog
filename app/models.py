@@ -20,7 +20,7 @@ class User(db.Model):
     email = db.Column(db.String(100), unique=True)  # 邮箱
     phone = db.Column(db.String(11), unique=True)  # 手机号
     info = db.Column(db.Text)  # 简介
-    face = db.Column(db.String(255), unique=True)  # 头像
+    face = db.Column(db.String(255))  # 头像
     addtime = db.Column(db.DateTime, index=True, default=datetime.now)  # 注册时间
     uuid = db.Column(db.String(255), unique=True)  # 唯一识别码
     userlogs = db.relationship("Userlog", backref="user")  # 登陆日志
@@ -45,13 +45,14 @@ class Userlog(db.Model):
         return "<Userlog {id}>".format(id=self.id)
 
 
-# 标签
-class Tag(db.Model):
-    __tablename__ = "tag"
+# 分类
+class Cate(db.Model):
+    __tablename__ = "cate"
     id = db.Column(db.Integer, primary_key=True)  # 编号
     name = db.Column(db.String(100), unique=True)  # 标题
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))  # 所属用户
     addtime = db.Column(db.DateTime, index=True, default=datetime.now)  # 创建时间
+    articles = db.relationship("Article", backref="cate")
 
     def __repr__(self):
         return "<Tag {name}>".format(name=self.name)
@@ -67,7 +68,8 @@ class Article(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))  # 所属用户
     shownum = db.Column(db.Integer)  # 阅读量
     commentnum = db.Column(db.Integer)  # 评论量
-    tags = db.Column(db.Text)  # 标签
+    cate = db.Column(db.Integer, db.ForeignKey('cate.id'))  # 分类
+    logo = db.Column(db.String(128))  # 封面
     comments = db.relationship("Comment", backref="article_comment")  # 文章评论
     articlecols = db.relationship("Articlecol", backref="article_col")  # 用户文章
     addtime = db.Column(db.DateTime, index=True, default=datetime.now)  # 创建时间
@@ -174,14 +176,14 @@ if __name__ == '__main__':
     #     auths=""
     # )
 
-    from werkzeug.security import generate_password_hash
-
-    admin = Admin(
-        name="海神名",
-        pwd=generate_password_hash("Haishen123"),
-        is_super=0,
-        role_id=1
-    )
-
-    db.session.add(admin)
-    db.session.commit()
+    # from werkzeug.security import generate_password_hash
+    #
+    # admin = Admin(
+    #     name="海神名",
+    #     pwd=generate_password_hash("Haishen123"),
+    #     is_super=0,
+    #     role_id=1
+    # )
+    #
+    # db.session.add(admin)
+    # db.session.commit()
