@@ -37,6 +37,16 @@ class LoginForm(FlaskForm):
     )
 
 
+    def validate_pwd(self, field):
+        pwd = field.data
+        user = User.query.filter_by(name=self.name.data).first()
+        if not user:
+            raise ValidationError("用户未注册")
+        else:
+            if user.check_pwd(pwd):
+                raise ValidationError("密码不正确")
+
+
 # 注册表单
 class RegisterForm(FlaskForm):
     name = StringField(

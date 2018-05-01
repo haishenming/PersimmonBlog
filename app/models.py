@@ -1,4 +1,5 @@
 from datetime import datetime
+from werkzeug.security import check_password_hash
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
@@ -31,6 +32,9 @@ class User(db.Model):
 
     def __repr__(self):
         return "<User {name}>".format(name=self.name)
+
+    def check_pwd(self, pwd):
+        return check_password_hash(self.pwd, pwd)
 
 
 # 登陆日志
