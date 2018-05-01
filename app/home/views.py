@@ -1,4 +1,3 @@
-
 from flask import render_template, redirect, url_for
 
 from . import home
@@ -9,16 +8,17 @@ def index():
     return "<h1>Hello home<h1>"
 
 
-
 # 登陆
 @home.route("/login/", methods=["GET", "POST"])
 def login():
     return render_template("home/login.html", title="登陆")
 
+
 # 注册
 @home.route("/register/", methods=["GET", "POST"])
 def register():
     return render_template("home/register.html", title="注册")
+
 
 # 退出
 @home.route("/logout/", methods=["GET"])
