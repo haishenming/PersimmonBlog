@@ -1,10 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-cn">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}">
+    {% block css %}{% endblock %}
     <title>文章列表</title>
 </head>
 <body>
+<nav class="navbar navbar-light" style="background-color: #e3f2fd">
+    <div class="container">
+        <a class="navbar">文章管理</a>
+        <a class="btn btn-outline-danger" href="/login/">退出</a>
+    </div>
 
+</nav>
+
+{% block content %}
+{% endblock %}
+
+<script src="{{ url_for('static', filename='jquery/jquery-3.2.1.js') }}"></script>
+<script src="{{ url_for('static', filename='popper/popper.js') }}"></script>
+<script src="{{ url_for('static', filename='bootstrap/js/bootstrap.js') }}"></script>
+<script src={{ url_for('static', filename='holder/holder.js') }}></script>
+
+{% block js %}
+{% endblock %}
 </body>
 </html>
