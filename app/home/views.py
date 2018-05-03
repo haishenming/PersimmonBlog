@@ -19,7 +19,7 @@ def login():
     if form.validate_on_submit():
         data = form.data
         session["user"] = data["name"]
-        return redirect("/art/list/")
+        return redirect("/art/list/1")
     return render_template("home/login.html", title="登陆", form=form)
 
 

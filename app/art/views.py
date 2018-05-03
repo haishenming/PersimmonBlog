@@ -8,13 +8,14 @@ from flask import render_template, redirect, session
 from .forms import ArtForm
 from . import art
 from ..models import User, Article, db
-from .. import app
 from pkg.funcs import user_login_req
+
 
 def change_name(name):
     info = os.path.splitext(name)
     name = datetime.now().strftime("%Y%m%d%X") + str(uuid.uuid4().hex) + info[-1]
     return name
+
 
 # 发布文章
 @art.route("/add/", methods=["GET", "POST"])
@@ -35,7 +36,6 @@ def add():
         db.session.add(art)
         db.session.commit()
 
-
     return render_template("art/art_add.html", title="添加文章", form=form)
 
 
@@ -54,7 +54,12 @@ def dele(id):
 
 
 # 文章列表
-@art.route("/list/", methods=["GET"])
+@art.route("/list/<int:page>", methods=["GET"])
 @user_login_req
-def list():
-    return render_template("art/art_list.html", title="文章列表")
+def list(page):
+    if page is None:
+        page = 1
+    user = User.query.filter_by(name=session["user"]).first()
+    page_data = Article.query.filter_by(user_id=user.id).order_by(Article.addtime.desc()).paginate(page=page, per_page=10)
+
+    return render_template("art/art_list.html", title="文章列表", page_data=page_data)
