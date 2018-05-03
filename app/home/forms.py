@@ -43,7 +43,7 @@ class LoginForm(FlaskForm):
         if not user:
             raise ValidationError("用户未注册")
         else:
-            if user.check_pwd(pwd):
+            if not user.check_pwd(pwd):
                 raise ValidationError("密码不正确")
 
 

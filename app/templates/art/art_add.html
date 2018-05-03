@@ -1,34 +1,32 @@
 {% extends 'art/art.html' %}
 
 {% block css %}
-    <script src="{{ url_for("static", filename='ue/ueditor.config.js') }}" type="text/javascript" charset="UTF-8"></script>
+    <script src="{{ url_for("static", filename='ue/ueditor.config.js') }}" type="text/javascript"
+            charset="UTF-8"></script>
     <script src="{{ url_for("static", filename='ue/ueditor.all.js') }}" type="text/javascript" charset="UTF-8"></script>
-    <script src="{{ url_for("static", filename='ue/lang/zh-cn/zh-cn.js') }}" type="text/javascript" charset="UTF-8"></script>
+    <script src="{{ url_for("static", filename='ue/lang/zh-cn/zh-cn.js') }}" type="text/javascript"
+            charset="UTF-8"></script>
 
 {% endblock %}
 {% block content %}
 
-    <form>
+    <form action="/art/add/" method="post">
         <div class="form-group">
             <label>{{ form.title.label }}</label>
             {{ form.title }}
-        </div>
-        <div class="form-group">
-            <label>{{ form.cate.label }}</label>
-            {{ form.cate }}
-        </div>
-        <div class="form-group">
-            <label>{{ form.logo.label }}</label>
-            {{ form.logo }}
-            <img data-src="holder.js/300x160" style="margin-top: 6px">
-            <br>
-            <a class="btn btn-primary" style="margin-top: 6px">上传封面</a>
+            {% for v in form.title.errors %}
+                <p style="color: red">{{ v }}</p>
+            {% endfor %}
         </div>
         <div class="form-group">
             <label>{{ form.content.label }}</label>
             {{ form.content }}
+            {% for v in form.content.errors %}
+                <p style="color: red">{{ v }}</p>
+            {% endfor %}
         </div>
-    {{ form.submit }}
+        {{ form.submit }}
+        {{ form.csrf_token }}
     </form>
 
 {% endblock %}

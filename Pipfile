@@ -5,9 +5,9 @@ name = "pypi"
 
 [packages]
 flask = "*"
-flask-sqlalchemy = "==2.1"
 pymysql = "*"
 flask-wtf = "*"
 pillow = "*"
+flask-sqlalchemy = "==2.2"
 
 [dev-packages]

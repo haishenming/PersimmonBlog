@@ -1,21 +1,41 @@
-from flask import render_template, redirect
+import os
+from datetime import datetime
+import uuid
+from werkzeug.utils import secure_filename
+
+from flask import render_template, redirect, session
 
 from .forms import ArtForm
 from . import art
+from ..models import User, Article, db
+from .. import app
 from pkg.funcs import user_login_req
 
+def change_name(name):
+    info = os.path.splitext(name)
+    name = datetime.now().strftime("%Y%m%d%X") + str(uuid.uuid4().hex) + info[-1]
+    return name
 
 # 发布文章
 @art.route("/add/", methods=["GET", "POST"])
 @user_login_req
 def add():
     form = ArtForm()
+    if form.validate_on_submit():
+        data = form.data
+        # 获取用户id
+        user = User.query.filter_by(name=session['user']).first()
+        user_id = user.id
+        # 保存数据
+        art = Article(
+            title=data["title"],
+            user_id=user_id,
+            content=data["content"]
+        )
+        db.session.add(art)
+        db.session.commit()
 
-    form.cate.choices = [
-        (1, "分类1"),
-        (2, "分类2"),
-        (3, "分类3"),
-    ]
+
     return render_template("art/art_add.html", title="添加文章", form=form)
 
 

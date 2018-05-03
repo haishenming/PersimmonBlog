@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 from werkzeug.security import check_password_hash
 
@@ -8,6 +9,7 @@ import pymysql
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://root:Haishen123@127.0.0.1:3306/persimmon_blog"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["UP"] = os.path.join(os.path.dirname(__file__), "static/uploads")
 
 db = SQLAlchemy(app)
 
@@ -25,7 +27,6 @@ class User(db.Model):
     addtime = db.Column(db.DateTime, index=True, default=datetime.now)  # 注册时间
     uuid = db.Column(db.String(255), unique=True)  # 唯一识别码
     userlogs = db.relationship("Userlog", backref="user")  # 登陆日志
-    cates = db.relationship("Cate", backref="cate_user")  # 用户标签
     articles = db.relationship("Article", backref="user")  # 用户文章
     comments = db.relationship("Comment", backref="user")  # 评论
     articlecols = db.relationship("Articlecol", backref="user")  # 收藏文章
@@ -49,19 +50,6 @@ class Userlog(db.Model):
         return "<Userlog {id}>".format(id=self.id)
 
 
-# 分类
-class Cate(db.Model):
-    __tablename__ = "cate"
-    id = db.Column(db.Integer, primary_key=True)  # 编号
-    name = db.Column(db.String(100), unique=True)  # 标题
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))  # 所属用户
-    addtime = db.Column(db.DateTime, index=True, default=datetime.now)  # 创建时间
-    articles = db.relationship("Article", backref="articles_cate")
-
-    def __repr__(self):
-        return "<Tag {name}>".format(name=self.name)
-
-
 # 文章
 class Article(db.Model):
     __tablename__ = "article"
@@ -72,8 +60,6 @@ class Article(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))  # 所属用户
     shownum = db.Column(db.Integer)  # 阅读量
     commentnum = db.Column(db.Integer)  # 评论量
-    cate = db.Column(db.Integer, db.ForeignKey('cate.id'))  # 分类
-    logo = db.Column(db.String(128))  # 封面
     comments = db.relationship("Comment", backref="article_comment")  # 文章评论
     articlecols = db.relationship("Articlecol", backref="article_col")  # 用户文章
     addtime = db.Column(db.DateTime, index=True, default=datetime.now)  # 创建时间
