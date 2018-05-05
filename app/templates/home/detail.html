@@ -2,6 +2,12 @@
 
 
 {% block content %}
+    <div class="jumbotron">
+        <h1>{{ art.title }}</h1>
+        <p>{{ art.addtime }} - 浏览量：{{ art.shownum }}</p>
+    </div>
+    <div>
+        {{ art.content | safe }}
+    </div>
 
-
-{% endblock %}
+{% endblock %}3

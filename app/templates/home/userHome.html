@@ -3,7 +3,6 @@
 
 
 {% block content %}
-    <div class="container">
         <div class="list-group">
             {% for art in arts.items %}
                 <a href="{{ url_for("home.detail", id=art.id) }}" class="list-group-item" style="color: #5b5b5b">
@@ -14,7 +13,6 @@
         </div>
         <br>
         {{ pg.page(arts, 'home.index', user.id) }}
-    </div>
 
 
 {% endblock %}
