@@ -3,7 +3,7 @@ from datetime import datetime
 import uuid
 from werkzeug.utils import secure_filename
 
-from flask import render_template, redirect, session
+from flask import render_template, redirect, session, url_for
 
 from .forms import ArtForm, ArtEditForm
 from . import art
@@ -22,11 +22,11 @@ def change_name(name):
 @user_login_req
 def add():
     form = ArtForm()
+    # 获取用户id
+    user = User.query.filter_by(name=session['user']).first()
+    user_id = user.id
     if form.validate_on_submit():
         data = form.data
-        # 获取用户id
-        user = User.query.filter_by(name=session['user']).first()
-        user_id = user.id
         # 保存数据
         art = Article(
             title=data["title"],
@@ -35,9 +35,9 @@ def add():
         )
         db.session.add(art)
         db.session.commit()
-        return redirect("art/list/1/")
+        return redirect(url_for("art.list", page=1))
 
-    return render_template("art/art_add.html", title="添加文章", form=form)
+    return render_template("art/art_add.html", title="添加文章", form=form, user=user)
 
 
 # 编辑文章
@@ -45,6 +45,8 @@ def add():
 @user_login_req
 def edit(id):
     form = ArtEditForm()
+    # 获取用户id
+    user = User.query.filter_by(name=session['user']).first()
     art = Article.query.get_or_404(int(id))
     if form.validate_on_submit():
         data = form.data
@@ -52,11 +54,11 @@ def edit(id):
         art.content = data["content"]
         db.session.add(art)
         db.session.commit()
-        return redirect("art/list/1")
+        return redirect(url_for("art.list", page=1))
     form.id.data = art.id
     form.title.data = art.title
     form.content.data = art.content
-    return render_template("art/art_edit.html", title="编辑文章", form=form, art=art)
+    return render_template("art/art_edit.html", title="编辑文章", form=form, art=art, user=user)
 
 
 # 删除文章
@@ -67,17 +69,15 @@ def dele(id):
     db.session.delete(art)
     db.session.commit()
 
-    return redirect("art/list/1")
+    return redirect(url_for("art.list", page=1))
 
 
 # 文章列表
 @art.route("/list/<int:page>", methods=["GET"])
 @user_login_req
 def list(page=1):
-    if page is None:
-        page = 1
     user = User.query.filter_by(name=session["user"]).first()
     page_data = Article.query.filter_by(user_id=user.id).order_by(Article.addtime.desc()).paginate(page=page,
                                                                                                    per_page=10)
 
-    return render_template("art/art_list.html", title="文章列表", page_data=page_data)
+    return render_template("art/art_list.html", title="文章列表", page_data=page_data, user=user)

@@ -18,8 +18,9 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         data = form.data
+        user = User.query.filter_by(name=data["name"]).first()
         session["user"] = data["name"]
-        return redirect("/art/list/1")
+        return redirect(url_for("home.home", id=user.id))
     return render_template("home/login.html", title="登陆", form=form)
 
 
@@ -53,3 +54,14 @@ def logout():
     session.pop("user", None)
     s = session.get("user")
     return redirect(url_for("home.login"))
+
+
+# 用户主页
+@home.route("/home/<int:id>", methods=["GET"])
+def home(id):
+    user = User.query.get_or_404(int(id))
+    user_arts = user.articles
+
+    return render_template("home/userHome.html", arts=user_arts, user=user, title="{}的主页".format(user.name))
+
+
