@@ -11,7 +11,7 @@
     <div class="container">
         <a class="navbar">文章管理</a>
         <div>
-            <a class="btn btn-outline-dark" href="{{ url_for("home.home", id=user.id) }}">主页</a>
+            <a class="btn btn-outline-dark" href="{{ url_for("home.index", id=user.id, page=1) }}">主页</a>
             <a class="btn btn-outline-danger" href="/logout/">退出</a>
         </div>
 

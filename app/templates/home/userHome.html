@@ -1,8 +1,20 @@
 {% extends "home/home.html" %}
+{% import "home/page.html" as pg %}
 
 
 {% block content %}
-
+    <div class="container">
+        <div class="list-group">
+            {% for art in arts.items %}
+                <a href="{{ url_for("home.detail", id=art.id) }}" class="list-group-item" style="color: #5b5b5b">
+                    <h4 class="list-group-item-heading">{{ art.title }}</h4>
+                    <p class="list-group-item-text">{{ art.addtime }} - 浏览量：{{ art.shownum }}</p>
+                </a>
+            {% endfor %}
+        </div>
+        <br>
+        {{ pg.page(arts, 'home.index', user.id) }}
+    </div>
 
 
 {% endblock %}

@@ -58,8 +58,8 @@ class Article(db.Model):
     info = db.Column(db.Text)  # 文章简介
     content = db.Column(db.Text)  # 文章内容
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))  # 所属用户
-    shownum = db.Column(db.Integer)  # 阅读量
-    commentnum = db.Column(db.Integer)  # 评论量
+    shownum = db.Column(db.Integer, default=0)  # 阅读量
+    commentnum = db.Column(db.Integer, default=0)  # 评论量
     comments = db.relationship("Comment", backref="article_comment")  # 文章评论
     articlecols = db.relationship("Articlecol", backref="article_col")  # 用户文章
     addtime = db.Column(db.DateTime, index=True, default=datetime.now)  # 创建时间

@@ -5,12 +5,13 @@ from functools import wraps
 from flask import render_template, redirect, url_for, flash, session, request
 
 from pkg.funcs import user_login_req
-from ..models import User, db
+from ..models import User, db, Article
 from .forms import LoginForm, RegisterForm
 from . import home
 from .. import app
 
 app.config["SECRET_KEY"] = "hjdahnjehhjkkjajehjakihufeiasdkj"
+
 
 # 登陆
 @home.route("/login/", methods=["GET", "POST"])
@@ -57,11 +58,21 @@ def logout():
 
 
 # 用户主页
-@home.route("/home/<int:id>", methods=["GET"])
-def home(id):
+@home.route("/home/<int:id>/<int:page>", methods=["GET"])
+def index(id, page):
     user = User.query.get_or_404(int(id))
-    user_arts = user.articles
+    page_data = Article.query.filter_by(user_id=user.id).order_by(Article.addtime.desc()).paginate(page=page,
+                                                                                                   per_page=10)
+    return render_template("home/userHome.html", arts=page_data, user=user, title="{}的主页".format(user.name))
 
-    return render_template("home/userHome.html", arts=user_arts, user=user, title="{}的主页".format(user.name))
 
-
+# 文章详情
+@home.route("/detail/<int:id>", methods=["GET"])
+def detail(id):
+    user = User.query.filter_by(name=session['user']).first()
+    art = Article.query.get_or_404(int(id))
+    art.shownum += 1
+    db.session.add(art)
+    db.session.commit()
+    title = art.title
+    return render_template("home/detail.html", art=art, user=user, title=title)
