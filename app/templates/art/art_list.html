@@ -3,41 +3,41 @@
 
 {% block css %}
     <style>
-    .table td, .table th{
-        vertical-align: middle;
-    }
+        .table td, .table th {
+            vertical-align: middle;
+        }
     </style>
 {% endblock %}
 {% block content %}
-                <table class="table table-bordered">
-                    <thead>
-                    <tr>
-                        <th>标题</th>
-                        <th>作者</th>
-                        <th>发布时间</th>
-                        <th>操作管理</th>
-                    </tr>
-                    </thead>
-                    {% for v in page_data.items %}
-                        <tr>
-                            <td>{{ v.title }}</td>
-                            <td>{{ session['user'] }}</td>
-                            <td>{{ v.addtime }}</td>
-                            <td>
-                                <button class="btn btn-sm btn-outline-warning">编辑</button>
-                                <button class="btn btn-sm btn-outline-danger">删除</button>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </table>
-{{ pg.page(page_data, 'art.list') }}
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>标题</th>
+            <th>作者</th>
+            <th>发布时间</th>
+            <th>操作管理</th>
+        </tr>
+        </thead>
+        {% for v in page_data.items %}
+            <tr>
+                <td>{{ v.title }}</td>
+                <td>{{ session['user'] }}</td>
+                <td>{{ v.addtime }}</td>
+                <td>
+                    <a href="{{ url_for('art.edit', id=v.id) }}" class="btn btn-sm btn-outline-warning">编辑</a>
+                    <a href="{{ url_for('art.dele', id=v.id) }}" class="btn btn-sm btn-outline-danger">删除</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    {{ pg.page(page_data, 'art.list') }}
 {% endblock %}
 
 {% block js %}
     <script>
-    $(document).ready(function () {
-        $("#m2").addClass("active")
-    })
+        $(document).ready(function () {
+            $("#m2").addClass("active")
+        })
     </script>
 
 {% endblock %}

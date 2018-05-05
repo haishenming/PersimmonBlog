@@ -5,7 +5,7 @@ from werkzeug.utils import secure_filename
 
 from flask import render_template, redirect, session
 
-from .forms import ArtForm
+from .forms import ArtForm, ArtEditForm
 from . import art
 from ..models import User, Article, db
 from pkg.funcs import user_login_req
@@ -35,6 +35,7 @@ def add():
         )
         db.session.add(art)
         db.session.commit()
+        return redirect("art/list/1/")
 
     return render_template("art/art_add.html", title="添加文章", form=form)
 
@@ -43,23 +44,40 @@ def add():
 @art.route("/edit/<int:id>", methods=["GET", "POST"])
 @user_login_req
 def edit(id):
-    return render_template("art/art_edit.html", title="编辑文章")
+    form = ArtEditForm()
+    art = Article.query.get_or_404(int(id))
+    if form.validate_on_submit():
+        data = form.data
+        art.title = data["title"]
+        art.content = data["content"]
+        db.session.add(art)
+        db.session.commit()
+        return redirect("art/list/1")
+    form.id.data = art.id
+    form.title.data = art.title
+    form.content.data = art.content
+    return render_template("art/art_edit.html", title="编辑文章", form=form, art=art)
 
 
 # 删除文章
 @art.route("/dele/<int:id>", methods=["GET", "POST"])
 @user_login_req
 def dele(id):
-    return redirect("art/list")
+    art = Article.query.get_or_404(int(id))
+    db.session.delete(art)
+    db.session.commit()
+
+    return redirect("art/list/1")
 
 
 # 文章列表
 @art.route("/list/<int:page>", methods=["GET"])
 @user_login_req
-def list(page):
+def list(page=1):
     if page is None:
         page = 1
     user = User.query.filter_by(name=session["user"]).first()
-    page_data = Article.query.filter_by(user_id=user.id).order_by(Article.addtime.desc()).paginate(page=page, per_page=10)
+    page_data = Article.query.filter_by(user_id=user.id).order_by(Article.addtime.desc()).paginate(page=page,
+                                                                                                   per_page=10)
 
     return render_template("art/art_list.html", title="文章列表", page_data=page_data)
