@@ -5,8 +5,8 @@ from functools import wraps
 from flask import render_template, redirect, url_for, flash, session, request
 
 from pkg.funcs import user_login_req
-from ..models import User, db, Article
-from .forms import LoginForm, RegisterForm
+from ..models import User, db, Article, Comment
+from .forms import LoginForm, RegisterForm, CommentForm
 from . import home
 from .. import app
 
@@ -21,7 +21,7 @@ def login():
         data = form.data
         user = User.query.filter_by(name=data["name"]).first()
         session["user"] = data["name"]
-        return redirect(url_for("home.home", id=user.id))
+        return redirect(url_for("home.index", id=user.id, page=1))
     return render_template("home/login.html", title="登陆", form=form)
 
 
@@ -75,4 +75,22 @@ def detail(id):
     db.session.add(art)
     db.session.commit()
     title = art.title
-    return render_template("home/detail.html", art=art, user=user, title=title)
+    form = CommentForm(id=id)
+
+    return render_template("home/detail.html", art=art, user=user, title=title, form=form)
+
+# 文章详情
+@home.route("/comment/", methods=["POST"])
+def comment():
+    user = User.query.filter_by(name=session['user']).first()
+    form = CommentForm()
+    if form.validate_on_submit():
+        comment_model = Comment()
+        comment_model.content = form.content.data
+        comment_model.user_id = user.id
+        comment_model.article = form.id.data
+        db.session.add(comment_model)
+        db.session.commit()
+
+    return redirect("/detail/{}".format(form.id.data))
+

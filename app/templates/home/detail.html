@@ -10,4 +10,33 @@
         {{ art.content | safe }}
     </div>
 
+    <div class="card-header">
+        评论
+    </div>
+    <div class="card-body">
+        <div class="list-group">
+            {% for comment in art.comments %}
+                <div class="list-group-item">
+                    <div><h3>{{ comment.user.name }}</h3> - {{ comment.addtime }}</div>
+                    <div>{{ comment.content }}</div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div>
+            <form action="/comment/" method="post">
+                <input type="hidden" name="id" value="{{ form.id.data }}">
+                <div class="form-group">
+                    {{ form.content }}
+                    {% for v in form.content.errors %}
+                        <p style="color: red">{{ v }}</p>
+                    {% endfor %}
+                </div>
+
+                {{ form.submit }}
+                {{ form.csrf_token }}
+            </form>
+        </div>
+    </div>
+
 {% endblock %}3

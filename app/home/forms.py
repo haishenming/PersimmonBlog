@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, IntegerField, TextAreaField
 from wtforms.validators import DataRequired, EqualTo, ValidationError
 from ..models import User
 
@@ -35,7 +35,6 @@ class LoginForm(FlaskForm):
             "class": "btn btn-primary",
         }
     )
-
 
     def validate_pwd(self, field):
         pwd = field.data
@@ -111,3 +110,31 @@ class RegisterForm(FlaskForm):
         if user > 0:
             raise ValidationError("用户名已经存在")
 
+
+class CommentForm(FlaskForm):
+    id = IntegerField(
+        label="编号",
+        description="编号",
+        validators=[
+            DataRequired("编号不能为空")
+        ],
+    )
+
+    content = TextAreaField(
+        label="评论",
+        description="评论",
+        validators=[
+            DataRequired("内容不能为空")
+        ],
+        render_kw={
+            "class": "form-control",
+            "style": "height: 100px;",
+        }
+    )
+
+    submit = SubmitField(
+        "评论",
+        render_kw={
+            "class": "btn btn-primary",
+        }
+    )
