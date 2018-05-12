@@ -6,9 +6,10 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 import pymysql
 
-app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://root:Haishen123@127.0.0.1:3306/persimmon_blog"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+from . import app
+
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///./sqlalchemy.db"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 app.config["UP"] = os.path.join(os.path.dirname(__file__), "static/uploads")
 
 db = SQLAlchemy(app)
